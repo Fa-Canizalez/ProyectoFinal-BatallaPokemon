@@ -41,16 +41,23 @@ void Bienvenida() // Banner inicial de bienvenida a los jugadores
     cout << "                    ========================================\n";
 }
 
-void pausar() // Permite detener el programa, y espera una accion del usuario.
+void pausar() // Permite detener el programa, y espera una accion del usuario. (Proporcionado por Gemini AI)
+
+/*La IA sugirio el uso de las funciones de entrda cin.peek, cin.ignore y cin.get, como una opcion para 
+detener momentaneamente la ejecución del programa, a partir de esa sugerencia se investigo el uso de estas funciones
+para el desarrollo de la función pausar() */
 
 {
     cout << "\nPresione Enter para continuar..."; // Mensaje para el usuario
-    if (cin.peek() == '\n') // Verifica si quedó un salto de línea
+    if (cin.peek() == '\n') // Verifica si quedó un salto de línea 
         cin.ignore(); // Ignora el salto de linea
     cin.get(); // Detiene el programa hasta que se ejecute la accion solicitada
 }
 
-bool Invalido() // Validación del tipo de dato de la entrada del usuario
+bool Invalido() // Validación del tipo de dato de la entrada del usuario (Proporcionado por Gemini AI)
+
+/*La IA brindó los comandos a utilizar para evitar un bucle infinito si un usuario ingresa un tipo de dato
+de entrada erroneo, el equipo adapto lo proporcionado por la IA a una función reutilizable en otras partes del codigo*/
 {
     if (cin.fail()) // Verifica si la entrada falló
     {
