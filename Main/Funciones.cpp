@@ -324,6 +324,308 @@ bool CargarPartida(string &NombreArchivo, string &j1, int EquipoJ1[], int Vida1[
     return true;
 }
 
+//Funciones para el desarrollo de la BATALLA
+
+//Funcion de verificacion de la vida de los Pokémon
+void verificacion(string j1, string j2, int poke1[], int poke2[], int vidaJ1[], int vidaJ2[], int &turno, bool &juego, int &ganador, int &actualJ1, int &actualJ2)
+{
+    //Evalúa si el Pokémon Actual del Jugador 1 se quedó sin vida despues del último ataque
+    if (vidaJ1[actualJ1] <= 0)
+    {
+        cout << "\n======================================================";
+        cout << "\n EL POKEMON " << ListaPokemon[poke1[actualJ1]] << " DE " << j1 << " SE HA DEBILITADO!";
+        cout << "\n======================================================\n";
+
+        int siguienteJ1 = -1; //Indicador de posicion neutro
+        for (int i = 0; i < 6; i++) //Recorre el arreglo de vida del Equipo del Jugador 1
+        {
+            if (vidaJ1[i] > 0) //Condicion para detectar un Pokémon con vida restante
+            {
+                siguienteJ1 = i; // Se cambia el valor de la variable para guardar la posicion numerica del Pokémon vivo
+                break; // Detiene el ciclo
+            }
+        }
+
+        if (siguienteJ1 != -1) // Verifica si se encontro o no un Pokémon con vida
+        {
+            actualJ1 = siguienteJ1; // Se le asigna el nuevo valor a la variable para continuar el juego 
+            
+            cout << "\n  ["<< j1 << "]"<< " retira a su Pokemon debilitado...";
+            cout << "\n   " << j1 << " envia a " << ListaPokemon[poke1[actualJ1]] << " a la batalla!\n";
+            pausar();
+            //Se finaliza la función sin modificar el estado del juego ni del ganador
+            return;
+        }
+        else
+        {
+            //En caso de no encontrar un Pokémon vivo se le asigna como ganador al Jugador 2
+            ganador = 2;
+            juego = false; // Cambia el estado del juego para salir del bucle de la batalla
+            return;
+        }
+    }
+
+    //Proceso adaptado con las variables del Jugador 2
+    else if (vidaJ2[actualJ2] <= 0)
+    {
+        cout << "\n======================================================";
+        cout << "\n EL POKEMON " << ListaPokemon[poke2[actualJ2]] << " DE " << j2 << " SE HA DEBILITADO!";
+        cout << "\n======================================================\n";
+
+        int siguienteJ2 = -1;
+        for (int i = 0; i < 6; i++)
+        {
+            if (vidaJ2[i] > 0)
+            {
+                siguienteJ2 = i;
+                break;
+            }
+        }
+
+        if (siguienteJ2 != -1)
+        {
+            actualJ2 = siguienteJ2;
+            
+            cout << "\n  ["<< j2 << "]" << " retira a su Pokemon debilitado...";
+            cout << "\n   " << j2 << " envia a " << ListaPokemon[poke2[actualJ2]] << " a la batalla!\n";
+            pausar();
+            return;
+        }
+        else
+        {
+            ganador = 1;
+            juego = false;
+            return;
+        }
+    }
+}
+
+//Función para menú de la batalla
+int menu(int turno, string j1, string j2)
+{
+    int opcion;
+    cout << endl<< endl;
+cout << "=========================================\n";
+cout << "           ES TU TURNO: " << (turno == 1 ? j1 : j2) << "!\n"; // Se usa un operador ternario para modificar el nombre en base al turno actual (1 o 2)
+cout << "=========================================\n" 
+        << "1. Usar ataque 1 \n"
+        << "2. Usar ataque 2\n"
+        << "3. Cambiar pokemon\n"
+        << "4. Rendirse \n";
+cout << "=========================================\n";
+    cout << "Para continuar seleccione una opcion: ";
+    cin >> opcion;
+
+    if (Invalido()) //Validacion del tipo de entrada
+    {
+        opcion = 0;
+    }
+
+    else if (opcion < 1 || opcion > 4)
+    {
+        cout << "\nOpcion invalida. Intenta nuevamente. \n" << endl;
+    }
+
+    return opcion;
+}
+
+// Función Ataque 1
+void ataque1(int vidaJ1[], int vidaJ2[], int poke1[], int poke2[], int dano[12][2], int actualJ1, int actualJ2, int &turno)
+{
+    cout << "\nUsaste el ataque 1!\n" << endl;
+    if (turno == 1)
+    {
+        //Se resta de la vida del rival el daño correspondiente al Pokémon actual y la columna de ataque '0'  
+        vidaJ2[actualJ2] = vidaJ2[actualJ2] - dano[poke1[actualJ1]][0]; 
+
+        if (vidaJ2[actualJ2] < 0) //Control para no mostrar valores negativos de vida 
+        {
+            vidaJ2[actualJ2] = 0;
+        }
+        cout << "Vida del rival: " << vidaJ2[actualJ2] << endl;
+        turno = 2; // Se alterna el indicador de turno para darle paso al siguiente jugador
+    }
+    else
+    {
+        vidaJ1[actualJ1] = vidaJ1[actualJ1] - dano[poke2[actualJ2]][0];
+
+        if (vidaJ1[actualJ1] < 0)
+        {
+            vidaJ1[actualJ1] = 0;
+        }
+        cout << "Vida del rival: " << vidaJ1[actualJ1] << endl;
+        turno = 1; // Se alterna el indicador de turno
+    }
+}
+
+// Función Ataque 2
+void ataque2(int vidaJ1[], int vidaJ2[], int poke1[], int poke2[], int dano[12][2], int actualJ1, int actualJ2, int &turno)
+{
+    cout << "\nUsaste el ataque 2!\n" << endl;
+    if (turno == 1)
+    {
+        //Se resta de la vida del rival el daño correspondiente al Pokémon actual y la columna de ataque '1'
+        vidaJ2[actualJ2] = vidaJ2[actualJ2] - dano[poke1[actualJ1]][1];
+
+        if (vidaJ2[actualJ2] < 0)
+        {
+            vidaJ2[actualJ2] = 0;
+        }
+        cout << "Vida del rival: " << vidaJ2[actualJ2] << endl;
+        turno = 2;
+    }
+    else
+    {
+        vidaJ1[actualJ1] = vidaJ1[actualJ1] - dano[poke2[actualJ2]][1];
+
+        if (vidaJ1[actualJ1] < 0)
+        {
+            vidaJ1[actualJ1] = 0;
+        }
+        cout << "Vida del rival: " << vidaJ1[actualJ1] << endl;
+        turno = 1;
+    }
+}
+
+// Función para cambiar pokemon
+void cambio(string ListaPokemon[], int poke1[], int poke2[], int vidaJ1[], int vidaJ2[], int &actualJ1, int &actualJ2, int &newSelect, int &turno)
+{
+    // Menú que muestra los pokemon disponibles para cambiar
+    cout << "\n================================" << endl;
+    cout << "     POKEMONS EN TU EQUIPO:     " << endl;
+    cout << "================================" << endl;
+
+    if (turno == 1)
+    {
+        for (int i = 0; i < 6; i++) // Enumera a los Pokémon del Equipo del jugador 1
+        {
+            cout << i + 1 << "- " << ListaPokemon[poke1[i]] << " - Vida: " << vidaJ1[i] << endl;
+            
+            if (i == actualJ1) cout << " [EN COMBATE]"; // Recordatorio del Pokémon en uso
+            if (vidaJ1[i] <= 0) cout << " [DEBILITADO]"; // Advertencia de Pokémon sin puntos de vida (no seleccionable)
+            cout << endl;
+        }
+
+        cout << "\nEscoge un nuevo pokemon (1 - 6): " << endl;
+        cin >> newSelect;
+
+        if (Invalido())
+        {
+            newSelect = -1;
+        }
+
+        //Evaluacion para la seleccion de Pokémon debilitado o Pokémon en uso
+        while (newSelect < 1 || newSelect > 6 || vidaJ1[newSelect - 1] <= 0 || (newSelect - 1) == actualJ1)
+        {
+            
+            if (newSelect == -1) // Validacion para el tipo de dato de entrada
+            {
+                cout << "Ingrese unicamente un numero entero (1 - 6): ";
+                cin >> newSelect;
+                if (Invalido()) newSelect = -1;
+            }
+            //Subcondicion para impedir seleccionar el Pokémon en uso
+            else if (newSelect >= 1 && newSelect <= 6 && (newSelect - 1) == actualJ1)
+            {
+                cout << "Pokemon en batalla. Selecciona uno diferente! : ";
+                cin >> newSelect;
+                if (Invalido()) newSelect = -1;
+            }
+            else 
+            {
+                cout << "Opcion incorrecta o Pokemon debilitado. Elige uno con vida: ";
+                cin >> newSelect;
+                if (Invalido()) newSelect = -1;
+            }
+        }
+
+        //Realiza el cambio de Pokémon ajustandolo al índice base 0 del arreglo
+        actualJ1 = newSelect - 1;
+
+        cout << "\nHas envidado a " << ListaPokemon[poke1[actualJ1]] << " a la batalla!" << endl;
+        turno = 2; //Cambio de turno
+    }
+    else
+    {
+        // Proceso adaptado a las varibales del Jugador 2
+        for (int i = 0; i < 6; i++)
+        {
+            cout << i + 1 << "- " << ListaPokemon[poke2[i]] << " - Vida: " << vidaJ2[i] << endl;
+            
+            if (i == actualJ2) cout << " [EN COMBATE]";
+            if (vidaJ2[i] <= 0) cout << " [DEBILITADO]";
+            cout << endl;
+        }
+
+        cout << "\nEscoge un nuevo pokemon (1 - 6): " << endl;
+        cin >> newSelect;
+
+        if (Invalido())
+        {
+            newSelect = -1;
+        }
+
+        while (newSelect < 1 || newSelect > 6 || vidaJ2[newSelect - 1] <= 0 || (newSelect - 1) == actualJ2)
+        {
+            
+            if(newSelect == -1)
+            {
+                cout << "Ingrese unicamente un numero entero (1 - 6): ";
+                cin >> newSelect;
+                if (Invalido()) newSelect = -1;
+            }
+            else if (newSelect >= 1 && newSelect <= 6 && (newSelect - 1) == actualJ2)
+            {
+                cout << "Pokemon en batalla. Selecciona uno diferente! : ";
+                cin >> newSelect;
+                if (Invalido()) newSelect = -1;
+            }
+            else
+            {
+            cout << "Opcion incorrecta o Pokemon debilitado. Elige uno con vida: ";
+            cin >> newSelect;
+            if (Invalido()) newSelect = -1;
+            }
+        }
+
+        actualJ2 = newSelect - 1;
+
+        cout << "\nHas envidado a " << ListaPokemon[poke2[actualJ2]] << " a la batalla!" << endl;
+        turno = 1;
+}
+}
+
+// Función para rendirse
+void rendirse(int &ganador, bool &juego, int &turno)
+{
+    cout << "Te has rendido " << endl;
+    if (turno == 1)
+    {
+        ganador = 2; // Al rendirse el Jugador 1 se asigna como ganador el Jugador 2
+        juego = false; // Se desactiva el juego 
+    }
+    else
+    {
+        ganador = 1; // Al rendirse el Jugador 2 se asigna como ganador al Jugador 1
+        juego = false; // Desactivación del juego 
+    }
+}
+
+// Función para opción invalida
+void OpcionInvalida(int &turno)
+{
+    cout << "Opcion invalida. Pierdes turno." << endl;
+    if (turno == 1)
+    {
+        turno = 2; 
+    }
+    else
+    {
+        turno = 1;
+    }
+}
+
+
 
 
 
