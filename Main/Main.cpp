@@ -123,6 +123,10 @@ while (opcionMenu != 3) // Bucle encargado de la repeticion del MENU PRINCIPAL
     opcionMenu = 3; // Se le asigna un valor a la variable que permite salir del bucle que controla el programa
 }
 
+if (ganador != 0) //Valida que haya un ganador asignado
+{
+    DeterminarGanador(ganador, Jugador1, Jugador2); //Funcion para determinar cual jugador es el ganador 
+}
 
     return 0;
 }
