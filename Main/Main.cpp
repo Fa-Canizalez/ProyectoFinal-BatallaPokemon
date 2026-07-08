@@ -47,7 +47,7 @@ int main ()
     pausar(); //Detiene la ejecucion del programa mientras espera una accion del usuario
 
 
-while (opcionMenu != 3)
+while (opcionMenu != 3) // Bucle encargado de la repeticion del MENU PRINCIPAL
 {
     opcionMenu = GenerarMenu(); //Funcion para generar el Menu incial dl juego
 
@@ -81,7 +81,48 @@ while (opcionMenu != 3)
             juego = false; //Se cambia el estado del juego para salir del bucle y salir del juego
         break;
     }
+
+    while (juego == true) // Se entra al bucle si se cambio el estado de juego a true
+    {
+        verificacion(Jugador1, Jugador2, Equipo1, Equipo2, Vida1, Vida2, turno, juego, ganador, PokemonActual1, PokemonActual2); //Funcion para verificar que Pokémones siguen vivos
+        
+        if (juego == false) break; //Si se cambia el estado del juego se rompe el bucle que controla la batalla
+
+        opcionBatalla = menu(turno, Jugador1, Jugador2); // Funcion para generar el Menu de opciones dentro de la batalla
+        
+            switch (opcionBatalla)
+            {
+                case 1:
+                    ataque1(Vida1, Vida2, Equipo1, Equipo2, DanhoPokemones, PokemonActual1, PokemonActual2, turno); //Funcion para utilizar el Ataque 1
+                break;
+
+                case 2:
+                    ataque2(Vida1, Vida2, Equipo1, Equipo2, DanhoPokemones, PokemonActual1, PokemonActual2, turno); // Funcion para el Ataque 2
+                break;
+
+                case 3:
+                    cambio(ListaPokemon, Equipo1, Equipo2, Vida1, Vida2, PokemonActual1, PokemonActual2, Seleccionado, turno); //Funcion que permite cambiar de Pokémon durante la batalla
+                break; 
+
+                case 4:
+                    rendirse(ganador, juego, turno); // Le permite al jugador rendirse y salir de la batalla
+                break;
+
+                default:
+                    OpcionInvalida(turno); //Funcion que detecta una opcion valida y genera la perdida del turno de uno de los jugadores
+                break;
+            }
+
+            if (juego == false) // Evalua si ha cambiado el estado del juego
+            {
+                break; // Permite romper el bucle en caso de que cambie el estado del juego a false
+            }
+        
+    }
+
+    opcionMenu = 3; // Se le asigna un valor a la variable que permite salir del bucle que controla el programa
 }
+
 
     return 0;
 }
