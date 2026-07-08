@@ -32,4 +32,7 @@ void OpcionInvalida(int &turno);
 void GuardarPartida(string NombreArchivo, string j1, int Equipo1[], int Vida1[], int ActualJ1, string j2, int Equipo2[], int Vida2[], int ActualJ2, int turno);
 bool CargarPartida(string &NombreArchivo, string &j1, int EquipoJ1[], int Vida1[], int &ActualJ1, string &j2, int EquipoJ2[], int Vida2[], int &ActualJ2, int &turno)
 
+//Funcion para determinar el Final de la Partida
+void DeterminarGanador(int ganador, string j1, string j2);
+
 #endif

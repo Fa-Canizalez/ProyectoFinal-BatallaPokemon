@@ -143,6 +143,7 @@ void PerfilJugador(int NumeroJugador, string &j1) // Funcion para la creacion de
     cin >> j1;
 }
 
+    //Funcion para seleccionar Equipos Pokémon
 void SeleccionEquipo(string NombreJugador, int EquipoActual[6], int Vida[6], int Maximo)
 
 {
@@ -236,6 +237,8 @@ void SeleccionEquipo(string NombreJugador, int EquipoActual[6], int Vida[6], int
     pausar();
 }
 
+//Funciones para el Guardado de datos
+
 void GuardarPartida(string NombreArchivo, string j1, int Equipo1[], int Vida1[], int ActualJ1, string j2, int Equipo2[], int Vida2[], int ActualJ2, int turno)
 {
     ofstream archivo;
@@ -326,7 +329,7 @@ bool CargarPartida(string &NombreArchivo, string &j1, int EquipoJ1[], int Vida1[
 
 //Funciones para el desarrollo de la BATALLA
 
-//Funcion de verificacion de la vida de los Pokémon
+    //Funcion de verificacion de la vida de los Pokémon
 void verificacion(string j1, string j2, int poke1[], int poke2[], int vidaJ1[], int vidaJ2[], int &turno, bool &juego, int &ganador, int &actualJ1, int &actualJ2)
 {
     //Evalúa si el Pokémon Actual del Jugador 1 se quedó sin vida despues del último ataque
@@ -400,7 +403,7 @@ void verificacion(string j1, string j2, int poke1[], int poke2[], int vidaJ1[], 
     }
 }
 
-//Función para menú de la batalla
+    //Función para menú de la batalla
 int menu(int turno, string j1, string j2)
 {
     int opcion;
@@ -429,7 +432,7 @@ cout << "=========================================\n";
     return opcion;
 }
 
-// Función Ataque 1
+    // Función Ataque 1
 void ataque1(int vidaJ1[], int vidaJ2[], int poke1[], int poke2[], int dano[12][2], int actualJ1, int actualJ2, int &turno)
 {
     cout << "\nUsaste el ataque 1!\n" << endl;
@@ -458,7 +461,7 @@ void ataque1(int vidaJ1[], int vidaJ2[], int poke1[], int poke2[], int dano[12][
     }
 }
 
-// Función Ataque 2
+    // Función Ataque 2
 void ataque2(int vidaJ1[], int vidaJ2[], int poke1[], int poke2[], int dano[12][2], int actualJ1, int actualJ2, int &turno)
 {
     cout << "\nUsaste el ataque 2!\n" << endl;
@@ -487,7 +490,7 @@ void ataque2(int vidaJ1[], int vidaJ2[], int poke1[], int poke2[], int dano[12][
     }
 }
 
-// Función para cambiar pokemon
+    // Función para cambiar pokemon
 void cambio(string ListaPokemon[], int poke1[], int poke2[], int vidaJ1[], int vidaJ2[], int &actualJ1, int &actualJ2, int &newSelect, int &turno)
 {
     // Menú que muestra los pokemon disponibles para cambiar
@@ -595,7 +598,7 @@ void cambio(string ListaPokemon[], int poke1[], int poke2[], int vidaJ1[], int v
 }
 }
 
-// Función para rendirse
+    // Función para rendirse
 void rendirse(int &ganador, bool &juego, int &turno)
 {
     cout << "Te has rendido " << endl;
@@ -611,7 +614,7 @@ void rendirse(int &ganador, bool &juego, int &turno)
     }
 }
 
-// Función para opción invalida
+    // Función para opción invalida
 void OpcionInvalida(int &turno)
 {
     cout << "Opcion invalida. Pierdes turno." << endl;
@@ -624,6 +627,31 @@ void OpcionInvalida(int &turno)
         turno = 1;
     }
 }
+
+//Funciones el final de la partida
+
+    //Funcion para determinar ganador
+    void DeterminarGanador(int ganador, string j1, string j2)
+{
+    if (ganador == 1)
+    {
+        cout << "======================\n";
+        cout << "  EL GANADOR ES " << j1 << "\n";
+        cout << "======================\n";
+        cout << "\nMUCHAS FELICIDADES " << j1 << endl;
+    }
+    else
+    {
+        cout << "======================\n";
+        cout << "  EL GANADOR ES " << j2 << "\n";
+        cout << "======================\n";
+        cout << "\nMUCHAS FELICIDADES " << j2 << endl;
+    }
+
+    cout << " ----- GRACIAS POR JUGAR! -----\n";
+    cout << "\n    Saliendo del juego.... " << endl;
+
+    }
 
 
 
