@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 #include <limits>
-#include "Funciones.h"
+#include "Funciones.cpp"
 
 using namespace std;
 
@@ -38,6 +38,14 @@ int main ()
 
     string Jugador1 = "", Jugador2 = "", NombrePartida = "";
     bool juego = false;
+
+    //Inicio del Juego
+    system("cls"); // Comando para limpiar la pantalla de la consola 
+
+    Logo(); // Funcion para generarl el logo de POKÉMON en ASCII
+    Bienvenida(); // Funcion para imprimir un banner de bienvenida inicial
+    pausar(); //Detiene la ejecucion del programa mientras espera una accion del usuario
+
 
     return 0;
 }
